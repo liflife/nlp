@@ -1,5 +1,6 @@
 import urllib.request
-from Py4Js import Py4Js
+from translation.Py4Js import Py4Js
+# from Py4Js import Py4Js
 
 
 def open_url(url):
@@ -11,6 +12,7 @@ def open_url(url):
 
 
 def translate(content, tk):
+    ret = ''
     if len(content) > 4891:
         print("翻译的长度超过限制！！！")
         return
@@ -28,21 +30,34 @@ def translate(content, tk):
 
     end = result.find("\",")
     if end > 4:
-        print(result[4:end])
+        ret = result[4:end]
+
+    return ret
+
+
+js = None
+
+
+def init():
+    global js
+    js = Py4Js()
+
+
+def tran(content: str):
+    tk = js.getTk(content)
+    return translate(content, tk)
 
 
 def main():
     js = Py4Js()
-
     while 1:
         content = input("输入待翻译内容：")
-
         if content == 'q!':
             break
-
         tk = js.getTk(content)
-        translate(content, tk)
+        return translate(content, tk)
 
 
 if __name__ == "__main__":
-    main()
+
+   print( main())
